@@ -1,0 +1,4 @@
+C:\Users\Janie\OneDrive - MONCCNB\College\PROG1206 - C++ OOP\Devoirs\Devoir 2\Devoir2_Point_Janie\x64\Debug\Devoir2_Point_Janie.exe
+C:\Users\Janie Berube\OneDrive - MONCCNB\College\PROG1206 - C++ OOP\Devoirs\Devoir 2\Devoir2_Point_Janie\x64\Debug\Devoir2_Point_Janie.exe
+C:\Users\Janie Berube\OneDrive - MONCCNB\College\Autre\2e anne - automne\PROG1206 - C++ OOP\Devoirs\Devoir 2\Devoir2_Point_Janie\x64\Debug\Devoir2_Point_Janie.exe
+C:\Users\Janie Berube\projets_prog\Point\x64\Debug\Devoir2_Point_Janie.exe
