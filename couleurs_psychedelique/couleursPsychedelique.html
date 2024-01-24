@@ -1,0 +1,192 @@
+<!--
+        Auteur : Janie Bérubé
+        Date : Le 7 décembre 2023
+        Description: Projet 1 - Partie 6
+       
+-->
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Projet 1</title>
+
+    <style type="text/css">
+        body {
+            text-align: center;
+        }
+
+        div {
+            width:50%;
+            margin: 0 auto;
+            padding-top: 3cm;
+        }
+
+        h2 {
+            font-size: 500%;
+        }
+
+        input[type="range"] {
+            width: 15rem;  
+        }
+
+        button {
+            background-color: rgb(212, 212, 212);
+            height: 2cm;
+            width: 6cm;
+            color: rgb(0, 0, 0);
+            font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            font-size: 26px;
+        }
+
+        .button2 {
+            background-color: rgb(162, 250, 21);
+            border-radius:12cm;
+            height:2cm;
+            width:max-content;
+            padding-left: 0.7cm;
+            padding-right: 0.7cm;
+            font-size: 45px;
+            font-family:Impact;
+            font-style: italic;
+            background: radial-gradient(rgb(63, 192, 252),rgb(248, 248, 114), rgb(235, 47, 235));
+        }
+
+        label {
+            height: 1cm;
+            border: 2px solid;
+            border-radius: 15px;
+            background-color: rgb(243, 242, 195);
+            padding-left: 5px;
+            padding-right: 5px;
+            font-size: 24px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <h2>rgb(rouge,vert,bleu)</h2>
+    <table align="center">
+        <tr>
+            <td width="350px">
+                <button type="button" id="btnRandColor" class="button1">Couleur au hasard</button>
+            </td>
+            <td width="450px">
+                <label for = "redColor">Red</label><br> 
+                <input type="range" id="redRange" name="redRange" min="0" max="255" step="5"/><br><br>
+                <label for = "greenColor">Green</label><br> 
+                <input type="range" id="greenRange" name="greenRange" min="0" max="255" step="5"/><br><br>
+                <label for = "blueColor">Blue</label><br>
+                <input type="range" id="blueRange" name="blueRange" min="0" max="255" step="5"/>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <br><br><br><br><br><br>
+                <button type="button" id="btnEffetPsych" class="button2">Effet psychédélique</button>
+                <br><br><br>
+                <label for = "vitesseRange">Vitesse</label><br>
+                <br>
+                <input type="range" id="vitesseRange" name="vitesseRange" min="1" max="3000" step="1" oninput="changerVitesse()"/>
+            </td>
+        </tr>
+    </table>
+        
+    <script>
+        //Déclaration et initialisation des variables;
+        let randomRed = 255;
+        let randomGreen = 255;
+        let randomBlue = 255;
+        let vitesse = 500;
+        let timer = null;
+
+        //Initialiser les valeurs au lancement du programme
+        if(localStorage.getItem("sauvegardeRed") && localStorage.getItem("sauvegardeGreen") && localStorage.getItem("sauvegardeBlue")) {
+                randomRed = parseInt(localStorage.getItem("sauvegardeRed"));
+                randomGreen = parseInt(localStorage.getItem("sauvegardeGreen"));
+                randomBlue = parseInt(localStorage.getItem("sauvegardeBlue"));
+            }
+
+            else {
+                couleurHasard();
+            }
+        window.addEventListener("load", function() {
+            document.querySelector("#redRange").value = randomRed;
+            document.querySelector("#greenRange").value = randomGreen;
+            document.querySelector("#blueRange").value = randomBlue;
+            document.querySelector("h2").innerHTML = `rgb(${randomRed},${randomGreen},${randomBlue})`;
+            document.querySelector("#vitesseRange").value = vitesse;
+            setColor();
+        });
+
+        window.addEventListener("unload", function() {
+            localStorage.setItem("sauvegardeRed", randomRed);
+            localStorage.setItem("sauvegardeGreen", randomGreen);
+            localStorage.setItem("sauvegardeBlue", randomBlue);
+        });
+
+        //Écoute d'événements 
+        document.querySelector("#btnRandColor").addEventListener("click", couleurHasard);
+        document.querySelector("#btnEffetPsych").addEventListener("click", effetPsychedelique);
+        document.querySelectorAll("input[type=range]").forEach(item => {
+            item.addEventListener("change", choixCouleurBarre);
+        })
+        document.querySelector("#vitesseRange").addEventListener("input", changerVitesse);
+
+
+        //---Fonctions---
+        function couleurHasard() {
+            randomRed = Math.floor(Math.random() * 254);
+            randomGreen = Math.floor(Math.random() * 254);
+            randomBlue = Math.floor(Math.random() * 254);
+
+            document.querySelector("#redRange").value = randomRed;
+            document.querySelector("#greenRange").value = randomGreen;
+            document.querySelector("#blueRange").value = randomBlue;
+
+            setColor();
+        }
+
+        function choixCouleurBarre() {
+            randomRed = document.querySelector("#redRange").value;
+            randomGreen = document.querySelector("#greenRange").value;
+            randomBlue = document.querySelector("#blueRange").value;
+
+            setColor();
+        }
+
+        function setColor() {
+            document.querySelector("h2").innerHTML = `rgb(${randomRed},${randomGreen},${randomBlue})`;
+            document.body.style.backgroundColor = `rgb(${randomRed},${randomGreen},${randomBlue})`;
+        }
+
+        function effetPsychedelique() {
+            changerVitesse();
+            if(timer != null) {
+                clearInterval(timer);
+                timer = null;
+                document.querySelector("#btnEffetPsych").innerHTML = "Effet psychédélique";
+            }
+                
+            else {
+                timer = setInterval(couleurHasard, vitesse);
+                document.querySelector("#btnEffetPsych").innerHTML = "Arrêter effet";
+            }            
+        }
+
+        function changerVitesse() {
+            vitesse = document.querySelector("#vitesseRange").value;
+
+            if (timer != null) {
+                clearInterval(timer);
+                timer = setInterval(couleurHasard, vitesse);
+            }
+        }
+
+    </script>
+</body>
+
+</html>
